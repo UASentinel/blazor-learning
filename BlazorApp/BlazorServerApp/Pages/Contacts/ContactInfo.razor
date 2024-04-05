@@ -1,0 +1,24 @@
+﻿<div class="container">
+    @if (DisplayName)
+    {
+        <h5>Name: @Contact.FirstName @Contact.LastName</h5>
+    }
+    @if (DisplayEmail)
+    {
+        <h5>Email: @Contact.Email</h5>
+    }
+    @if (displayInfo)
+    {
+        <h6>Email of @Contact.FirstName @Contact.LastName is @Contact.Email</h6>
+    }
+    <button class="btn btn-primary"
+            @onclick="@(() => {displayInfo = !displayInfo;})">
+        @if (displayInfo) {<span>Hide</span>}
+        else {<span>Show</span>}
+        info
+    </button>
+    <button class="btn btn-danger"
+            @onclick="@(() => {DeleteContact.InvokeAsync(Contact);})">
+        Delete
+    </button>
+</div>

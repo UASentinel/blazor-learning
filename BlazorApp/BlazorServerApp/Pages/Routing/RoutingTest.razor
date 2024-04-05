@@ -1,0 +1,17 @@
+﻿@page "/routing/test"
+@inject NavigationManager navigationManager
+
+<h3>RoutingTest</h3>
+
+<a href="sandbox">Go to Sandbox</a>
+
+<br />
+
+<button class="btn btn-success" @onclick=NavigateToSandbox>Go to Sandbox</button>
+
+@code {
+    private void NavigateToSandbox()
+    {
+        navigationManager.NavigateTo("./sandbox");
+    }
+}

@@ -1,0 +1,51 @@
+﻿<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">BlazorServerApp</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        @foreach(var navElement in navElements)
+        {
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="@navElement.Href" Match="@navElement.Match">
+                    <span class="oi @navElement.Icon" aria-hidden="true"></span> @navElement.Label
+                </NavLink>
+            </div>
+        }
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    private List<NavElement> navElements;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        navElements = new List<NavElement>()
+        {
+            new NavElement("", "oi-home", "Home", NavLinkMatch.All),
+            new NavElement("counter", "oi-plus", "Counter"),
+            new NavElement("fetchdata", "oi-list-rich", "Fetch data"),
+            new NavElement("sandbox", "oi-beaker", "Sandbox"),
+            new NavElement("contacts", "oi-briefcase", "Contacts"),
+            new NavElement("fetch-contacts", "oi-bookmark", "Fetch Contacts"),
+            new NavElement("javascript/test", "oi-bolt", "Javascript"),
+            new NavElement("members", "oi-bolt", "Members")
+        };
+    }
+}

@@ -1,0 +1,50 @@
+﻿@page "/members"
+@inject IMemberService memberService;
+
+<PageTitle>Members</PageTitle>
+
+<h3>Members</h3>
+
+<a href="./members/add" class="btn btn-success">Add Member</a>
+
+@if (members is null || members.Count == 0)
+{
+    <h6>No members to display</h6>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td>Name</td>
+                <td>Email</td>
+                <td>Age</td>
+                <td>Joining Date</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                @foreach (var member in members)
+                {
+                    <MemberInfo Member="@member" OnRefresh="Refresh"></MemberInfo>
+                }
+            </tr>
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Member> members;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        members = memberService.GetMembers().ToList();
+    }
+
+    private void Refresh()
+    {
+        members = memberService.GetMembers().ToList();
+    }
+}

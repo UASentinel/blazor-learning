@@ -1,0 +1,10 @@
+﻿@page "/routing/test/{ContactName}"
+
+<h3>RoutingParameterTest</h3>
+
+<h5>@ContactName</h5>
+
+@code {
+    [Parameter]
+    public string ContactName { get; set; }
+}

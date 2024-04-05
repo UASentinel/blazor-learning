@@ -1,0 +1,28 @@
+﻿<input type="checkbox" @bind="@displayName" />
+<label>Display name</label>
+<input type="checkbox" @onchange="@(() => {displayEmail = !displayEmail;})" />
+<label>Display email</label>
+
+@if (displayContacts)
+{
+    @if (Contacts is null)
+    {
+        @NullContacts
+    }
+    else if (Contacts.Count == 0)
+    {
+        @EmptyContacts
+    }
+    else
+    {
+        @foreach (var contact in Contacts)
+        {
+            <ContactInfo Contact="@contact"
+                         DisplayEmail="@displayEmail"
+                         DisplayName="@displayName"
+                         DeleteContact="RequestDeleteContact"></ContactInfo>
+        }
+    }
+}
+
+<DeleteModal @ref="deleteModal" OnConfirmed="OnDeleteConfirmed"></DeleteModal>

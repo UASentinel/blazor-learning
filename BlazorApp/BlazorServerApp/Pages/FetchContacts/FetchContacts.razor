@@ -1,0 +1,33 @@
+﻿@page "/fetch-contacts"
+@using BlazorServerApp.Pages.Contacts
+
+<h3>FetchContacts</h3>
+
+<form @onsubmit="AddContact">
+    <input type="text" placeholder="First Name" @bind="@firstNameInput"/>
+    <br />
+    <input type="text" placeholder="Last Name" @bind="@lastNameInput" />
+    <br />
+    <input type="text" placeholder="Email" @bind="@emailInput" />
+    <br />
+    <button class="btn btn-success" type="submit">Add contact</button>
+</form>
+
+@if(contacts.Count == 0)
+{
+    <b>No contacts to display</b>
+}
+else
+{
+    foreach(var contact in contacts)
+    {
+        <ContactInfo Contact="@contact"
+                     DisplayEmail="true"
+                     DisplayName="true"
+                     ></ContactInfo>
+    }
+}
+
+@code {
+    
+}

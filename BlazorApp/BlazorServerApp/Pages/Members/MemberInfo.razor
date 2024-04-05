@@ -1,0 +1,24 @@
+﻿@inject IMemberService memberService;
+
+<td>@Member.Name</td>
+<td>@Member.Email</td>
+<td>@Member.Age</td>
+<td>@Member.JoinedDate.ToString("dd-MM-yy")</td>
+<td>
+    <a class="btn btn-warning" href="./members/update/@Member.Id">Update</a>
+    <button class="btn btn-danger" @onclick="DeleteMember">Delete</button>
+</td>
+
+@code {
+    [Parameter]
+    public Member Member { get; set; }
+
+    [Parameter]
+    public EventCallback OnRefresh { get; set; }
+
+    private void DeleteMember()
+    {
+        memberService.DeleteMember(Member.Id);
+        OnRefresh.InvokeAsync();
+    }
+}

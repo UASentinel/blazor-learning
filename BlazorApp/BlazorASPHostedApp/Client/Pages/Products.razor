@@ -1,0 +1,87 @@
+﻿@page "/products"
+@using BlazorASPHostedApp.Shared;
+@inject HttpClient httpClient;
+
+<h3>Products</h3>
+
+<h4>Add Product</h4>
+
+<EditForm Model="@createProduct" OnValidSubmit="AddProduct" style="padding: 10px;border: 1px solid purple;border-radius: 10px; margin-bottom: 20px">
+    <InputText style="margin-bottom: 10px"
+               class="form-control"
+               placeholder="Code"
+                @bind-Value="@createProduct.Code"></InputText>
+    <InputText style="margin-bottom: 10px"
+               class="form-control"
+               placeholder="Name"
+                @bind-Value="@createProduct.Name"></InputText>
+    <InputNumber style="margin-bottom: 10px"
+                 class="form-control"
+                @bind-Value="@createProduct.Price"></InputNumber>
+
+    <button class="btn btn-success" type="submit">Submit</button>
+</EditForm>
+
+@if(products is not null && products.Count > 0)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td>Code</td>
+                <td>Name</td>
+                <td>Price</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                @foreach(var product in products)
+                {
+                    <td>@product.Code</td>
+                    <td>@product.Name</td>
+                    <td>@product.Price</td>
+                    <td>
+                        <button class="btn btn-danger"
+                                @onclick="async () => {await DeleteProduct(product.Code);}">
+                            Delete
+                        </button>
+                    </td>
+                }
+            </tr>
+        </tbody>
+    </table>
+}
+else
+{
+    <h5>No products to display</h5>
+}
+
+@code {
+    private List<Product> products;
+    private Product createProduct;
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+
+        createProduct = new Product();
+        await RefreshProducts();
+    }
+
+    private async Task AddProduct()
+    {
+        await httpClient.PostAsJsonAsync<Product>("api/Products", createProduct);
+        await RefreshProducts();
+    }
+
+    private async Task DeleteProduct(string productCode)
+    {
+        await httpClient.DeleteAsync($"api/Products?productCode={productCode}");
+        await RefreshProducts();
+    }
+
+    private async Task RefreshProducts()
+    {
+        products = await httpClient.GetFromJsonAsync<List<Product>>("api/Products");
+    }
+}

@@ -1,0 +1,31 @@
+﻿@page "/sandbox"
+
+<PageTitle>Sandbox</PageTitle>
+
+<h3>Sandbox</h3>
+
+<h1>Hello, @GetUserName()!</h1>
+
+<p>Embedded code V1: @GetSum()</p>
+<p>Embedded code V2: @(2 + 2)</p>
+
+<button class="btn btn-primary" @onclick="ChangeUserName">Change username V1</button>
+<button class="btn btn-primary" @onclick="@(() => {userName = "Illya";})">Change username V2</button>
+
+@if (age >= 18)
+{
+    <p>Your age is appropriate</p>
+}
+else
+{
+    <p class="text-danger">Your age is not appropriate for this app</p>
+}
+
+<ul>
+    @foreach (var element in elements)
+    {
+        <li>@element.Value is @element.Label</li>
+    }
+</ul>
+
+<Input placeholder="Test input" type="text"></Input>

@@ -1,0 +1,64 @@
+﻿@page "/members/update/{Id:int}"
+@inject IMemberService memberService;
+@inject NavigationManager navigationManager;
+
+<h3>Update Member</h3>
+
+<EditForm Model="@member" OnValidSubmit="Submit" style="padding: 10px;border: 1px solid purple;border-radius: 10px;">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <ValidationMessage For="(() => member.Name)"></ValidationMessage>
+    <InputText style="margin-bottom: 10px"
+               class="form-control"
+               placeholder="Name"
+                @bind-Value="@member.Name"></InputText>
+    <ValidationMessage For="(() => member.Email)"></ValidationMessage>
+    <InputText style="margin-bottom: 10px"
+               class="form-control"
+               placeholder="Email"
+                @bind-Value="@member.Email"></InputText>
+    <InputNumber style="margin-bottom: 10px"
+                 class="form-control"
+                  @bind-Value="@member.Age"></InputNumber>
+    <InputDate style="margin-bottom: 20px"
+               class="form-control"
+                @bind-Value="@member.JoinedDate"></InputDate>
+
+    <a href="./members" class="btn btn-secondary" type="button">Cancel</a>
+    <button class="btn btn-success" type="submit">Submit</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private MemberViewModel member;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        var dbMember = memberService.GetMemberById(Id);
+        member = new MemberViewModel()
+            {
+                Id = dbMember.Id,
+                Name = dbMember.Name,
+                Age = dbMember.Age,
+                Email = dbMember.Email,
+                JoinedDate = dbMember.JoinedDate
+            };
+    }
+
+    private void Submit()
+    {
+        memberService.UpdateMember(new Member()
+            {
+                Id = member.Id,
+                Name = member.Name,
+                Email = member.Email,
+                Age = member.Age,
+                JoinedDate = member.JoinedDate
+            });
+
+        navigationManager.NavigateTo("./members");
+    }
+}
